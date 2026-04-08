@@ -29,7 +29,7 @@ pipeline {
             steps {
                 bat """
                 docker rm -f my-container || exit 0
-                docker run -d -p 8080:8080 --name my-container ${IMAGE_NAME}
+                docker run -d -p 8082:8082 --name my-container ${IMAGE_NAME}
                 """
             }
         }
