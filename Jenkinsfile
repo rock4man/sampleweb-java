@@ -7,12 +7,6 @@ pipeline {
 
     stages {
 
-        stage('Clone') {
-            steps {
-                git 'https://github.com/rock4man/sampleweb-java.git'
-            }
-        }
-
         stage('Build & Test') {
             steps {
                 bat 'mvn clean test'
@@ -38,15 +32,6 @@ pipeline {
                 docker run -d -p 8080:8080 --name my-container ${IMAGE_NAME}
                 """
             }
-        }
-    }
-
-    post {
-        success {
-            echo 'Pipeline executed successfully!'
-        }
-        failure {
-            echo 'Pipeline failed!'
         }
     }
 }
