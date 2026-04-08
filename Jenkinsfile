@@ -27,16 +27,16 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                bat 'docker build -t %IMAGE_NAME% .'
+                bat "docker build -t ${IMAGE_NAME} ."
             }
         }
 
         stage('Run Container') {
             steps {
-                bat '''
-                docker rm -f my-container || true
-                docker run -d -p 8080:8080 --name my-container %IMAGE_NAME%
-                '''
+                bat """
+                docker rm -f my-container || exit 0
+                docker run -d -p 8080:8080 --name my-container ${IMAGE_NAME}
+                """
             }
         }
     }
