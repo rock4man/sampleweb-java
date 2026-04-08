@@ -15,7 +15,7 @@ pipeline {
 
         stage('Build & Test') {
             steps {
-                bat 'mvn clean test'
+                bat 'cd lab20 && mvn clean test'
             }
         }
 
@@ -27,7 +27,7 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                bat 'docker build -t %IMAGE_NAME% .'
+                bat 'cd lab20 && docker build -t %IMAGE_NAME% .'
             }
         }
 
