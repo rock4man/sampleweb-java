@@ -1,0 +1,52 @@
+pipeline {
+    agent any
+
+    environment {
+        IMAGE_NAME = "my-java-web"
+    }
+
+    stages {
+
+        stage('Clone') {
+            steps {
+                git 'https://github.com/rock4man/sample-java.git'
+            }
+        }
+
+        stage('Build & Test') {
+            steps {
+                bat 'mvn clean test'
+            }
+        }
+
+        stage('Package') {
+            steps {
+                bat 'mvn package -DskipTests'
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                bat 'docker build -t %IMAGE_NAME% .'
+            }
+        }
+
+        stage('Run Container') {
+            steps {
+                bat '''
+                docker rm -f my-container || true
+                docker run -d -p 8080:8080 --name my-container %IMAGE_NAME%
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline executed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+    }
+}
